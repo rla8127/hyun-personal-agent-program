@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>학습 시간 AI 비서</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>📚 학습 시간 AI 비서</h1>
+    <p class="sub">내 학습 기록을 아는 AI에게 물어보세요.</p>
+  </header>
+
+  <div id="wakeNotice" class="notice" hidden>
+    무료 서버가 잠자기에서 깨어나는 중입니다. 첫 요청은 최대 1분 정도 걸릴 수 있어요.
+  </div>
+
+  <main class="layout">
+    <!-- 왼쪽: 요약 + 대화 기록 -->
+    <aside class="sidebar">
+      <section class="card">
+        <h2>📊 데이터 요약</h2>
+        <dl id="summary" class="summary">
+          <dt>기간</dt><dd data-key="period">-</dd>
+          <dt>기록 수</dt><dd data-key="count">-</dd>
+          <dt>평균</dt><dd data-key="average">-</dd>
+          <dt>최대</dt><dd data-key="max">-</dd>
+          <dt>최소</dt><dd data-key="min">-</dd>
+          <dt>추세</dt><dd data-key="trend">-</dd>
+        </dl>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>💬 대화 기록</h2>
+          <button id="newChatBtn" class="btn btn-ghost">새 대화</button>
+        </div>
+        <ul id="conversationList" class="conv-list"></ul>
+      </section>
+    </aside>
+
+    <!-- 가운데: 채팅 -->
+    <section class="card chat-card">
+      <h2>채팅</h2>
+      <div id="chatLog" class="chat-log"></div>
+      <form id="chatForm" class="chat-form">
+        <input id="chatInput" type="text" placeholder="예) 이번 주 공부 시간 어때?" autocomplete="off" required />
+        <button id="chatSend" type="submit" class="btn btn-primary">전송</button>
+      </form>
+    </section>
+
+    <!-- 오른쪽: 데이터 관리 -->
+    <section class="card">
+      <h2>🗂 데이터 관리</h2>
+      <form id="dataForm" class="data-form">
+        <input type="hidden" id="editingId" />
+        <label>날짜 <input type="date" id="dateInput" required /></label>
+        <label>학습 시간(분) <input type="number" id="valueInput" min="0" max="1440" required /></label>
+        <label>메모 <input type="text" id="memoInput" maxlength="200" placeholder="과목" /></label>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="dataSubmit">추가</button>
+          <button type="button" class="btn btn-ghost" id="cancelEdit" hidden>취소</button>
+        </div>
+      </form>
+      <ul id="dataList" class="data-list"></ul>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <!-- env.js 는 Vercel 빌드 때 생성된다(로컬에는 없어도 됨). config.js 보다 먼저 로드한다. -->
+  <script src="./js/env.js" onerror="void 0"></script>
+  <script src="./js/config.js"></script>
+  <script src="./js/api.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
