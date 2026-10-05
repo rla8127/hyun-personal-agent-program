@@ -155,7 +155,7 @@ http://127.0.0.1:5500 접속. 백엔드 주소는 `js/config.js`의 기본값을
 | 변수 | 필수 | 설명 |
 |------|------|------|
 | `OPENAI_API_KEY` | ✅ | OpenAI API 키 |
-| `OPENAI_MODEL` | | 사용 모델 (기본 `gpt-4o-mini`) |
+| `OPENAI_MODEL` | | 사용 모델 (기본 `gpt-5.6-luna`) |
 | `OPENAI_MAX_TOKENS` | | 응답 최대 토큰 (기본 `500`) |
 | `FIREBASE_SERVICE_ACCOUNT_JSON` | ✅(배포) | 서비스 계정 키 JSON 전체를 한 줄 문자열로 |
 | `FIREBASE_SERVICE_ACCOUNT_PATH` | ✅(로컬) | 서비스 계정 키 파일 경로 |

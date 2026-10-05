@@ -51,7 +51,10 @@ def ask(summary: dict, history: list[dict], user_message: str) -> str:
     resp = _get_client().chat.completions.create(
         model=settings.OPENAI_MODEL,
         messages=messages,
-        max_tokens=settings.OPENAI_MAX_TOKENS,
-        temperature=0.7,
+        # GPT-5 계열은 max_tokens 대신 max_completion_tokens를 쓰고, temperature 변경을 지원하지 않는다.
+        max_completion_tokens=settings.OPENAI_MAX_TOKENS,
     )
-    return resp.choices[0].message.content.strip()
+    content = resp.choices[0].message.content
+    if not content:
+        raise RuntimeError("AI가 빈 응답을 반환했습니다. OPENAI_MAX_TOKENS 값을 늘려 보세요.")
+    return content.strip()
