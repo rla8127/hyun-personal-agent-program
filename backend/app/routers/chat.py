@@ -1,8 +1,13 @@
 """AI 챗봇 엔드포인트 (컨텍스트 주입 + 대화 자동 저장)."""
+import logging
+
+import openai
 from fastapi import APIRouter, HTTPException
 
 from app.schemas.chat import ChatRequest, ChatResponse
 from app.services import ai_service, analysis_service, conversation_service
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/chat", tags=["chat"])
 
@@ -26,8 +31,13 @@ def chat(payload: ChatRequest):
         reply = ai_service.ask(summary, history, payload.message)
     except RuntimeError as e:
         raise HTTPException(status_code=500, detail=str(e))
-    except Exception:
-        raise HTTPException(status_code=502, detail="AI 응답 생성에 실패했습니다. 잠시 후 다시 시도해 주세요.")
+    except openai.APIStatusError as e:
+        # 401(키 오류), 429(쿼터/크레딧 부족), 404(모델 권한 없음) 등 OpenAI가 돌려준 에러
+        logger.exception("OpenAI API 오류")
+        raise HTTPException(status_code=502, detail=f"OpenAI 오류 ({e.status_code}): {e.message}")
+    except Exception as e:
+        logger.exception("AI 응답 생성 실패")
+        raise HTTPException(status_code=502, detail=f"AI 응답 생성에 실패했습니다: {type(e).__name__}: {e}")
 
     # 4) 대화 자동 저장
     new_messages = [

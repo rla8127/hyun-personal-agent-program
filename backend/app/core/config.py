@@ -7,7 +7,8 @@ load_dotenv()
 
 
 class Settings:
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+    # 대시보드에 붙여넣을 때 섞이는 공백/줄바꿈/따옴표 제거 (헤더에 들어가면 연결 오류가 난다)
+    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "").strip().strip('"\'')
     OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
     OPENAI_MAX_TOKENS: int = int(os.getenv("OPENAI_MAX_TOKENS", "500"))
 
